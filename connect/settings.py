@@ -49,7 +49,6 @@ DATABASES = {
 
 # Configure User model
 AUTH_USER_MODEL = 'person.User'
-ALLOWED_HOSTS = ["localhost"]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',  # Required for admin
