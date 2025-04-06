@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from datetime import timedelta
 
 # Load environment variables
 load_dotenv()
@@ -47,7 +48,10 @@ DATABASES = {
         'PORT': 6543,
     }
 }
-
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),  # Set access token lifetime to 1 day
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),  # Optional: Set refresh token lifetime
+}
 # Configure User model
 AUTH_USER_MODEL = 'person.User'
 MIDDLEWARE = [
