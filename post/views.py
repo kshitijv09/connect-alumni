@@ -4,9 +4,14 @@ from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
 
 class PostListView(generics.ListAPIView):
-    queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = []  # No permission restrictions
+
+    def get_queryset(self):
+        user_id = self.request.query_params.get('user_id')  # Get user ID from query parameters
+        if user_id:
+            return Post.objects.filter(author_id=user_id)  # Filter posts by user ID
+        return Post.objects.all()  # Return all posts if no user ID is provided
 
     def post(self, request, *args, **kwargs):
         # Get author ID from request body

@@ -43,7 +43,7 @@ class SignUpView(generics.CreateAPIView):
 class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (permissions.IsAuthenticated, IsOwnerOrAdmin)
+    permission_classes = []
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -122,4 +122,5 @@ class UserUpdateView(generics.UpdateAPIView):
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
-        return Response(serializer.data, status=status.HTTP_200_OK) 
+        return Response(serializer.data, status=status.HTTP_200_OK)
+

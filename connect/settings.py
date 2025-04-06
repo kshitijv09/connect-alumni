@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'post',
     'alumnifund',
     'corsheaders',
+    'rest_framework.authtoken'
 ]
 
 REST_FRAMEWORK = {
