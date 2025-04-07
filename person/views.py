@@ -6,6 +6,7 @@ from .models import User, UserRole
 from .serializers import UserSerializer, UserRoleSerializer
 from .permissions import IsAdmin, IsOwnerOrAdmin
 from rest_framework.views import APIView
+from django.contrib.auth import get_user_model
 
 class SignUpView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -40,30 +41,20 @@ class SignUpView(generics.CreateAPIView):
                 'errors': str(e)
             }, status=status.HTTP_400_BAD_REQUEST)
 
-class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = User.objects.all()
+class UserDetailView(generics.RetrieveAPIView):
+    User = get_user_model()  # Get the custom user model
     serializer_class = UserSerializer
-    permission_classes = []
+    permission_classes = []  # No permission restrictions
 
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def update(self, request, *args, **kwargs):
-        partial = kwargs.pop('partial', False)
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def destroy(self, request, *args, **kwargs):
-        instance = self.get_object()
-        self.perform_destroy(instance)
-        return Response({
-            'message': 'User deleted successfully'
-        }, status=status.HTTP_204_NO_CONTENT)
+    def get(self, request, *args, **kwargs):
+        username = kwargs.get('username')  # Get username from URL parameters
+        try:
+            # Fetch user directly using the username
+            user = self.User.objects.get(username=username)  # Fetch user by username
+            serializer = self.get_serializer(user)
+            return Response(serializer.data, status=200)
+        except self.User.DoesNotExist:
+            return Response({'error': 'User not found'}, status=404)
 
 class UserVerificationView(generics.GenericAPIView):
     permission_classes = (permissions.IsAuthenticated, IsAdmin)
