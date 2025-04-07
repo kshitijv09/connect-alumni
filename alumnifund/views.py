@@ -58,17 +58,31 @@ class DonationCreateView(generics.CreateAPIView):
 
 class DonationDetailView(generics.RetrieveAPIView):
     queryset = Fund.objects.all()
-    serializer_class = DonationSerializer
     permission_classes = []  # No permission restrictions
 
     def get(self, request, *args, **kwargs):
         fund_id = kwargs.get('pk')  # Get fund ID from URL parameters
         try:
             fund = self.get_queryset().get(id=fund_id)  # Fetch fund by ID
+            
             # Fetch donations related to the fund, sort by amount, and get top 3
             donations = Donation.objects.filter(fund=fund).order_by('-amount')[:3]
-            serializer = DonationSerializer(donations, many=True)
-            return Response(serializer.data, status=200)
+            donation_serializer = DonationSerializer(donations, many=True)
+
+            # Prepare the response, including fund details in each donation
+            response_data = []
+            for donation in donation_serializer.data:
+                # Add fund details to each donation
+                donation['fund'] = {
+                    'id': fund.id,
+                    'title': fund.title,
+                    'description': fund.description,
+                    'amount': fund.amount,
+                    'image_url': fund.image_url,
+                }
+                response_data.append(donation)
+
+            return Response(response_data, status=200)
         except Fund.DoesNotExist:
             return Response({'error': 'Fund not found'}, status=404)
 
