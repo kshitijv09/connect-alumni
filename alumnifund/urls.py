@@ -17,6 +17,6 @@ urlpatterns = [
     path('funds/<int:pk>/delete/', FundDeleteView.as_view(), name='fund-delete'),  # Delete a fund
     path('donations/', DonationListView.as_view(), name='donation-list'),  # List all donations
     path('donations/create/', DonationCreateView.as_view(), name='donation-create'),  # Create a new donation
-    path('donations/<int:pk>/', DonationDetailView.as_view(), name='donation-detail'),  # Retrieve/update a donation
+    path('fund/<int:pk>/donations/', DonationDetailView.as_view(), name='donation-detail'),  # Fetch donations by fund ID
     path('donations/<int:pk>/delete/', DonationDeleteView.as_view(), name='donation-delete'),  # Delete a donation
 ] 
