@@ -7,7 +7,9 @@ from .views import (
     DonationListView,
     DonationCreateView,
     DonationDetailView,
-    DonationDeleteView
+    DonationDeleteView,
+    FundExcelDownloadView,
+    AllFundsExcelDownloadView
 )
 
 urlpatterns = [
@@ -19,4 +21,6 @@ urlpatterns = [
     path('donations/create/', DonationCreateView.as_view(), name='donation-create'),  # Create a new donation
     path('fund/<int:pk>/donations/', DonationDetailView.as_view(), name='donation-detail'),  # Fetch donations by fund ID
     path('donations/<int:pk>/delete/', DonationDeleteView.as_view(), name='donation-delete'),  # Delete a donation
+    path('funds/<int:pk>/download/', FundExcelDownloadView.as_view(), name='fund-download'),  # Download fund details as Excel
+    path('funds/download-all/', AllFundsExcelDownloadView.as_view(), name='all-funds-download'),  # Download all funds and donations as Excel
 ] 

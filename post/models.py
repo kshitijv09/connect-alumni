@@ -9,6 +9,7 @@ class Post(models.Model):
     likes = models.ManyToManyField(User, related_name='liked_posts', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    type = models.CharField(max_length=200, default="normal_post")
 
     class Meta:
         db_table = 'posts'

@@ -2,6 +2,11 @@ from rest_framework import serializers
 from .models import User, UserRole
 from django.core.validators import RegexValidator
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
+        
 class UserRoleSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserRole

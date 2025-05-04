@@ -29,7 +29,12 @@ INSTALLED_APPS = [
     'post',
     'alumnifund',
     'corsheaders',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
+    'django.contrib.sites',  # Required for allauth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 REST_FRAMEWORK = {
@@ -63,6 +68,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',  # Required for admin
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'allauth.account.middleware.AccountMiddleware'
     # ... other middleware
 ]
 ROOT_URLCONF = 'connect.urls'
@@ -87,3 +93,18 @@ TEMPLATES = [
 
 # For development only
 CORS_ALLOW_ALL_ORIGINS = True  # Don't use in production 
+
+# Add the site ID
+SITE_ID = 1
+
+# Configure authentication backends
+AUTHENTICATION_BACKENDS = (
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+# Configure allauth settings
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "none"  # Change to "mandatory" if you want email verification
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_USERNAME_REQUIRED = False  # Optional: Disable username requirement
+LOGIN_REDIRECT_URL = '/'  # Redirect URL after login 

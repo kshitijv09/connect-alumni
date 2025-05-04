@@ -8,20 +8,32 @@ class PostListView(generics.ListAPIView):
     permission_classes = []  # No permission restrictions
 
     def get_queryset(self):
-        user_id = self.request.query_params.get('user_id')  # Get user ID from query parameters
+        queryset = Post.objects.all()
+        
+        # Get filters from query parameters
+        user_id = self.request.query_params.get('user_id')
+        post_type = self.request.query_params.get('type')
+        
+        # Apply filters if they exist
         if user_id:
-            return Post.objects.filter(author_id=user_id)  # Filter posts by user ID
-        return Post.objects.all()  # Return all posts if no user ID is provided
+            queryset = queryset.filter(author_id=user_id)
+        if post_type:
+            queryset = queryset.filter(type=post_type)
+            
+        return queryset
 
     def post(self, request, *args, **kwargs):
-        # Get author ID from request body
+        # Get filters from request body
         author_id = request.data.get('author', None)
+        post_type = request.data.get('type', None)
         
         queryset = self.filter_queryset(self.get_queryset())
         
-        # Filter by author if provided
+        # Apply filters if they exist
         if author_id:
             queryset = queryset.filter(author_id=author_id)
+        if post_type:
+            queryset = queryset.filter(type=post_type)
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
