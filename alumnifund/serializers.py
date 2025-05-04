@@ -7,6 +7,12 @@ class FundSerializer(serializers.ModelSerializer):
     class Meta:
         model = Fund
         fields = '__all__'
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        if 'amount' in data and data['amount'] is not None:
+            data['amount'] = float(instance.amount)
+        return data    
+
 
 class DonationSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
