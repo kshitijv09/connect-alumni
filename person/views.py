@@ -9,10 +9,7 @@ from rest_framework.views import APIView
 import requests
 from django.conf import settings
 from rest_framework import status
-from django.contrib.auth import authenticate
-from django.contrib.auth import login, get_user_model
-from allauth.socialaccount.providers.google.provider import GoogleProvider
-from allauth.socialaccount.providers.oauth2.client import OAuth2Error
+from django.contrib.auth import  get_user_model
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 User = get_user_model()
