@@ -151,11 +151,12 @@ class GoogleLoginView(generics.GenericAPIView):
             # Check if the email ends with the specified domain
             if not email.endswith('iiitt.ac.in'):  # Replace with your domain
                 return Response({'error': 'Email domain not allowed'}, status=status.HTTP_403_FORBIDDEN)
-                        
+            
+            role_instance = UserRole.objects.get(name="USER")
             # Get or create the user
             user, created = User.objects.get_or_create(username=user_info['name'], defaults={
                 'password':"oauth_pwd",
-                'role':"USER"
+                'role':role_instance
             })
             refresh = RefreshToken.for_user(user)
 
