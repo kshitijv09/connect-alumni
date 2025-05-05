@@ -13,6 +13,11 @@ class FundSerializer(serializers.ModelSerializer):
             data['amount'] = float(instance.amount)
         return data    
 
+class DonationCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Donation
+        fields = ['donor', 'fund', 'amount', 'payment_status', 'transaction_id', 'message']
+
 
 class DonationSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()

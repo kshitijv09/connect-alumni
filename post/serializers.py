@@ -15,6 +15,11 @@ class PostSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
     likes_count = serializers.SerializerMethodField()
     is_liked = serializers.SerializerMethodField()
+    tags = serializers.ListField(
+    child=serializers.CharField(),
+    required=False
+)
+
 
     class Meta:
         model = Post

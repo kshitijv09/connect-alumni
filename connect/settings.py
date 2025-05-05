@@ -108,3 +108,13 @@ ACCOUNT_EMAIL_VERIFICATION = "none"  # Change to "mandatory" if you want email v
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_USERNAME_REQUIRED = False  # Optional: Disable username requirement
 LOGIN_REDIRECT_URL = '/'  # Redirect URL after login 
+
+# Email Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '211118@iiitt.ac.in')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'surajpura')
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', '211118@iiitt.ac.in') 
+EMAIL_HOST_PASSWORD = "jlsd aokm wkfk dyjq"

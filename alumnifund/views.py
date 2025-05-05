@@ -1,7 +1,7 @@
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from .models import Fund, Donation
-from .serializers import FundSerializer, DonationSerializer
+from .serializers import FundSerializer, DonationSerializer, DonationCreateSerializer
 from person.permissions import IsAdmin
 from openpyxl import Workbook
 from django.http import HttpResponse
@@ -55,8 +55,16 @@ class DonationListView(generics.ListAPIView):
 
 class DonationCreateView(generics.CreateAPIView):
     queryset = Donation.objects.all()
-    serializer_class = DonationSerializer
-    permission_classes = []  # No permission restrictions
+    serializer_class = DonationCreateSerializer
+    permission_classes = []
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        donation = serializer.save()
+        return Response(DonationSerializer(donation).data, status=status.HTTP_201_CREATED)
+
+
 
 class DonationDetailView(generics.RetrieveAPIView):
     queryset = Fund.objects.all()

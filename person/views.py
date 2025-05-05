@@ -158,11 +158,13 @@ class GoogleLoginView(generics.GenericAPIView):
                 'password':"oauth_pwd",
                 'role':role_instance
             })
+            user_data = UserSerializer(user).data 
             refresh = RefreshToken.for_user(user)
 
             return Response({
                 'message': 'Login successful',
                 'created': created,
+                'user': user_data,
                 'tokens': {
                     'refresh': str(refresh),
                     'access': str(refresh.access_token),
